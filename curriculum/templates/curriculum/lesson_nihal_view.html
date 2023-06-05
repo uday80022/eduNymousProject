@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Lesson {% endblock %}
+{% block lesson_content %}  
+  <section >
+    
+              
+
+              
+              
+              
+              <div class="lessoncontainer" >
+                  <div class="lessoncontainer1">
+                    <br >
+                    <br>
+                    <br>
+                    
+                          <div id="vidwraper" style=" max-width:100%; height:0;padding-bottom:56.25%;position:relative;">
+                            <iframe style="width:100%;max-width:100%;height:100%;position:absolute;top:0;left:0" src="https://www.youtube.com/embed/{{lessons.video}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            
+                          </div>
+                        <div id = "download_card" class="row d-flex justify-content-center mb-3 mt-3">
+                              <!-- download presentations -->
+                                        
+                              <!-- download notes -->
+                                        <div  class="col-md-6 mb-4 mt-4">
+                                          <div class="card box-shadow-hover">
+                                            <div class="card-body">
+                                              <h5 class="card-title">Download Notes</h5>
+                                              {% if lessons.Notes %}
+                                              <p class="card-text">Download notes from the lecture</p>
+                                              <a href="{{lessons.Notes.url}}" download>
+                                              <button type="button" class="button-les"><span>Get Files</span></button>
+                                              </a>
+                                              {% else %}
+                                              <p class="card-text">Notes not available</p>
+                                              {%endif%}
+                        
+                                            </div>
+                                          </div>
+                                        </div>
+                              <!-- download video -->
+                                        
+                            </div>
+                            <!-- update and delete button -->
+                            <div class="row d-flex justify-content-center mb-3 mt-3">
+                                {% if request.user.user_profile.user_type == 'teacher'  or user.is_superuser %}
+                                <div class="col-md-6 mb-3 text-center">
+                                    <a href="{% url 'curriculum:lesson_update' standard=lessons.Standard.slug subject=lessons.subject.slug slug=lessons.slug %}" class="btn btn-dark btn-lg mr-4 btn-block">Update Lesson</a>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href="{% url 'curriculum:lesson_delete' standard=lessons.Standard.slug subject=lessons.subject.slug slug=lessons.slug %}" class="btn btn-dark btn-lg mr-4 btn-block"> Delete Lesson </a>
+                                </div>
+                                {% endif %}
+                              </div>
+                        
+                  </div>
+                 
+                  <div class="lessoncontainer2"  style="border: 2px solid white;">
+                      <!-- <iframe src="http://localhost:8000/curriculum/r19cse/data/introduction-dataminig/form" frameborder="0"></iframe> -->
+                      
+
+<section class="ncontainerscroll" >
+  <br>
+    <h4  class="mb-4 mt-5"style="text-align:center;" > Anonymous Question Box </h4>
+    <h4  class="mt-2 " style="text-align:center;">Post your question below no one will know your identity!!!</h4>
+    <br>
+    <div class="container row">
+      <div class="col-md-12">
+                              <form method="post" onclick="f">
+                                    <div class="form-group">
+                                    {% csrf_token %}
+                                    {{form|crispy}}
+                                    <input type="submit" name="form" value="Add Comment" class="btn btn-dark btn-sm">
+                                    </div>
+                              </form>
+
+      </div>
+    </div>
+    <div class="row">
+        {% for comment in lessons.comments.all %}
+      <div class="col-md-11 mt-2 mb-2">
+                      <div class="media border p-3">
+                          <img src="{% static 'Images/user_default.png' %}" alt="user" class="mr-3 mt-3 rounded-circle" style="width:60px;">
+                          <div class="media-body">
+                            <p>{{comment.body}}</p>
+                            {% for reply in comment.replies.all %}
+                                        <div class="media p-3">
+                                                <img src="{% static 'Images/user_default.png' %}" alt="Jane Doe" class="mr-3 mt-3 rounded-circle" style="width:45px;">
+                                        <div class="media-body">
+                                                
+                                                 <!-- <h5> <small><i>Posted on {{reply.date_added}}</i></small></h5> -->
+                                                <p>{{reply.reply_body}}</p>
+                                          </div>
+                                        </div>
+                            {% endfor %}
+                            <!-- form to post reply -->
+                            <form method="post" class="myform">
+                                  <input type="hidden" name="comment.id" value="{{comment.id}}">
+                                  <input type="hidden" name="comment.comm_name" value="{{comment.comm_name}}">
+                                  {% csrf_token %}
+                                  {{form2.as_p}}
+                                  <input type="submit" name="form2" value="Add Reply" class="btn btn-dark btn-sm">
+                            </form>
+                          </div>
+                  </div>
+      </div>
+      {% endfor %}
+    </div>
+    
+</section>
+
+
+                      </div>
+                    </div>
+                    
+
+
+
+    
+  </section>
+
+  {% endblock %}

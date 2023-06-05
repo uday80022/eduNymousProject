@@ -1,0 +1,53 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Login{% endblock %}
+
+
+
+{% block content %}
+
+    
+    <div class="ncontainer">
+        {% if user.is_authenticated %}
+        <div class="ncontainer1">
+             Hey Unknown!
+        </div>
+        {% else %}
+    <div class="ncontainer1">
+        <div class="row d-flex justify-content-center mb-4" style="border:2px solid red">
+            <!-- class column -->
+            <div class="col-md-8">
+              <p class="grey-text"> Student Login Credentials for Demo <br> username:student <br> password:password</p>
+              
+            </div>
+          </div>
+          <div class="row d-flex justify-content-center mb-4" style="border:2px solid white">
+            <!-- class column -->
+            <div class="col-md-8">
+              <p class="grey-text">Professor Login Credentials for Demo <br> username:&nbsp; professor <br> password:password
+                                 </p>
+              
+            </div>
+          </div>
+    </div>
+    {% endif %}
+    
+    {% if user.is_authenticated %}
+    <div class="ncontainer1">
+        &#128994; Login Successful!
+    </div>
+    {% else %}
+    <div class="ncontainer2">
+        <form id = "nform" action="{% url 'user_login' %}" method="post">
+            {% csrf_token %}
+            <input class = "ninput" type="text" name="username" placeholder="Username">  
+            <input class = "ninput" type="password" name = "password" placeholder="Password">
+            <input id = "nbutton" type="submit" value="Login" >
+            <!-- <button>Login</button> -->
+        </form>
+    </div>
+    </div>
+    {% endif %}
+{%endblock%}

@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filter_tags %}
+{% block title %} Standards {% endblock %}
+
+
+
+
+{% block content %}
+<!-- section 1 for standards-->
+
+<section id="best-features" class="text-center">
+              <hr></hr>
+              <hr></hr>
+              <h2 class="mb-5 mt-5 font-weight-bold" style="color:#26abff;">Team CYC</h2>
+              <!-- class row for description-->
+              <div class="row d-flex justify-content-center mb-4">
+                <!-- class column -->
+                <div class="col-md-8">
+                  <p class="grey-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quasi voluptate
+                                    hic
+                                    provident nulla repellat
+                                    facere esse molestiae ipsa labore porro minima quam quaerat rem, natus repudiandae debitis
+                                    est
+                                    sit pariatur.</p>
+                  {% comment %} <p class="grey-text">{{request.user.user_profile.bio}}</p> {% endcomment %}
+                  {% comment %} {%with request.user.user_profile.bio|split:"," as c%}
+                        {%for p in c%}
+                          {{p}}
+                        {%endfor%}
+                  {% endwith %} {% endcomment %}
+                </div>
+              </div>
+              <!-- class row2 for cards -->
+              <div class="row">
+                     
+                      {%with request.user.user_profile.bio|split:"," as c%}
+                      <!-- {{c}} -->
+                      {%for p in c%}
+                      {% comment %} {{user.user_profile.bio}} {% endcomment %}
+                      {% for standard in standards %}
+
+                      {% comment %} <p>{{standard.name}}</p> {% endcomment %}
+                      {% if standard.name == p%}
+                      <div class="col-md-4 d-flex mb-5 justify-content-center">
+                        <div class="card card-std text-center" style="width: 20rem;">
+                          <div class="card-body text-center">
+                            <h4 class="card-title" style="color:#212121;">{{standard.name}}</h4>
+                            
+                            <!-- <p class="card-text">{{standard.description|truncatechars:75}}</p> -->
+                            {% if user.is_authenticated %}
+                            <a href="{% url 'curriculum:subject_list' slug=standard.slug %}" class="btn btn-primary" style="background-color:#00bcd4;">Lets get started</a>
+                            {%endif%}
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {% endif %}
+                      
+                      {% endfor %}
+                      {%endfor%}
+                      {% endwith %}
+              </div>
+              
+</section> 
+
+{%endblock%}

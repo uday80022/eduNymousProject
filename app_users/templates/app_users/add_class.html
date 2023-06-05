@@ -1,0 +1,37 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Login{% endblock %}
+
+
+
+{% block content %}
+
+    
+    <div class="ncontainer">
+    <div class="ncontainer1">
+        Available Classes <br>
+        {% for standard in standards %}
+        {{standard}}
+        <br>
+        {% endfor%}
+    </div>
+    {% if user.is_authenticated %}
+    <div class="ncontainer2">
+        <form id = "nform" action="{% url 'add_class' %}" method="post">
+            {% csrf_token %}
+            <input class = "ninput" type="text" name="name" placeholder="Professor username">  
+            <input class = "ninput" type="text" name = "class" placeholder="new class to add">
+            <input id = "nbutton" type="submit" value="Add" >
+            <!-- <button>Login</button> -->
+        </form>
+    </div>
+   
+    {% else %}
+    <div class="ncontainer2">
+        Illegal
+    </div>
+    </div>
+    {% endif %}
+{%endblock%}

@@ -1,0 +1,52 @@
+@media (max-width:555px) {
+    .lessoncontainer{
+        display: flex;
+        flex-direction: column;
+    }
+    /* .lessoncontainer{
+        display: grid;
+        grid-template-areas: 
+        "container_1"
+        "container_2 ";
+        
+
+        
+    }
+    .lessoncontainer1{
+        grid-area: container_1;
+    }
+    .lessoncontainer2{
+        grid-area: container_2;
+    } */
+    
+}
+
+.lessoncontainer{
+    display: grid;
+    
+    grid-template-columns:1fr 1fr;
+    
+    /* border: 2px solid white; */
+    height: 96vh;
+
+    
+    
+    grid-gap: 5px;
+    
+}
+.lessoncontainer2{
+    
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    overflow: hidden;
+    overflow-y: scroll;
+    
+
+    
+
+}
+
+
+    
+    

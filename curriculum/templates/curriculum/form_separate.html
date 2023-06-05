@@ -1,0 +1,52 @@
+
+
+<section class="ncontainerscroll" >
+    <br>
+      <h4  class="mb-4 mt-5"style="text-align:center;" > Anonymous Question Box </h4>
+      <h4  class="mt-2 " style="text-align:center;">Post your question below no one will know your identity!!!</h4>
+      <br>
+      <div class="container row">
+        <div class="col-md-12">
+                                <form method="post">
+                                      <div class="form-group">
+                                      {% csrf_token %}
+                                      {{form|crispy}}
+                                      <input type="submit" name="form" value="Add Comment" class="btn btn-dark btn-sm">
+                                      </div>
+                                </form>
+  
+        </div>
+      </div>
+      <div class="row">
+          {% for comment in lessons.comments.all %}
+        <div class="col-md-11 mt-2 mb-2">
+                        <div class="media border p-3">
+                            <img src="{% static 'Images/user_default.png' %}" alt="user" class="mr-3 mt-3 rounded-circle" style="width:60px;">
+                            <div class="media-body">
+                              <p>{{comment.body}}</p>
+                              {% for reply in comment.replies.all %}
+                                          <div class="media p-3">
+                                                  <img src="{% static 'Images/user_default.png' %}" alt="Jane Doe" class="mr-3 mt-3 rounded-circle" style="width:45px;">
+                                          <div class="media-body">
+                                                  
+                                                   <h5> <small><i>Posted on {{reply.date_added}}</i></small></h5>
+                                                  <p>{{reply.reply_body}}</p> -->
+                                            </div>
+                                          </div>
+                              {% endfor %}
+                              <!-- form to post reply -->
+                              <form method="post">
+                                    <input type="hidden" name="comment.id" value="{{comment.id}}">
+                                    <input type="hidden" name="comment.comm_name" value="{{comment.comm_name}}">
+                                    {% csrf_token %}
+                                    {{form2.as_p}}
+                                    <input type="submit" name="form2" value="Add Reply" class="btn btn-dark btn-sm">
+                              </form>
+                            </div>
+                    </div>
+        </div>
+        {% endfor %}
+      </div>
+      
+  </section>
+

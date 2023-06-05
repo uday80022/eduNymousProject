@@ -1,0 +1,79 @@
+@media (max-width:555px) {
+    /* .lessoncontainer{
+        display: flex;
+        flex-direction: column;
+    } */
+    .lessoncontainer{
+        display: grid;
+        grid-template-areas: 
+        "container_1 container_1"
+        "container_2 container_2"
+        "container_2 container_2"
+        "container_2 container_2";
+        border: 2px solid white;
+        
+
+        
+    }
+    .lessoncontainer1{
+        grid-area: container_1;
+        border: 2px solid white;
+    }
+    .lessoncontainer2{
+        grid-area: container_2;
+        border: 2px solid white;
+    }
+    
+}
+
+.lessoncontainer{
+    display: grid;
+    
+    grid-template-columns:1fr 1fr;
+    
+    /* border: 2px solid white; */
+    height: 100vh;
+
+    
+    
+    grid-gap: 5px;
+    
+}
+.lessoncontainer2{
+    
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    overflow: hidden;
+    overflow-y: scroll;
+    
+
+    
+
+}
+#n_nav_eff{
+    font-size: small;
+    color:#FFFFFF;
+
+}
+#n_nav_eff:hover{
+    color: black;
+    border: 1px solid white;
+    border-radius: 8px;
+    background-color: white;
+}
+/* #all_p{
+    color: #FFFFFF;
+} */
+.semcontainer{
+    display: flex;
+}
+
+.main_black{
+    background-color: #353839;
+    color: white;
+  }
+.main_white{
+    background-color: #F4F5FA;
+    color: black;
+  }

@@ -1,0 +1,77 @@
+
+@media (max-width:555px) {
+    
+    .ncontainer{
+        display: grid;
+        grid-template-areas: 
+        "container_1 container_1"
+        "container_2 container_2";
+        /* background-color: black; */
+        
+    }
+    .ncontainer1{
+        grid-area: container_1;
+    }
+    .ncontainer2{
+        grid-area: container_2;
+    }
+    
+}
+
+.ncontainer{
+    display: grid;
+    
+    grid-template-columns:1fr 1fr;
+    /* border: 2px solid white; */
+    height: 96vh;
+
+    
+    
+    /* grid-gap: 5px; */
+    
+}
+.ncontainer2{
+    /* border: 2px solid white; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.ncontainer1{
+    /* border: 2px solid white; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    color: aliceblue;
+    
+}
+#nform{
+    display: grid;
+    grid-gap: 7px;
+}
+#nbutton{
+    width: 100px;
+    margin: auto;
+    display: block;
+    color: white;
+    background-color: black;
+    font-size: medium;
+    font-family: 'Courier New', Courier, monospace;
+    border: 2px solid skyblue;
+    border-radius: 8px;
+}
+#nbutton:hover{
+    background-color: skyblue;
+    color: black;
+    border: 2px solid white;
+}
+.ninput{
+    border-radius: 8px;
+    width: 250px;
+    margin: auto;
+    display: block;
+    height: 27px;
+    text-align: center;
+    
+}

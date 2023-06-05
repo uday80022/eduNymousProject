@@ -1,0 +1,31 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Login{% endblock %}
+
+
+
+{% block content %}
+
+    
+    <div class="ncontainer">
+    <div class="ncontainer1">
+        <form action="{% url 'report' %}" method="post" >
+            {% csrf_token %}
+            <input name = "commentid" type="number" placeholder="Search Candidate" value=' '>
+            <input type="submit">
+        </form>
+    </div>
+    
+    <div class="ncontainer2">
+        {{mode}} <br>
+        {{name}} <br>
+        {{comment_text}}<br>{{com_id}} <br>
+        {{c_lesson}} <br>
+        {{candidate_email}}
+    </div>
+    </div>
+    
+{%endblock%}
+

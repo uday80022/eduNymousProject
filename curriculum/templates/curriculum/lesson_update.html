@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Lesson Update {% endblock %}
+
+{% block image_block %}
+
+{% endblock %}
+
+
+{% block content %}
+
+<section id="best-features" class="text-center">
+              <h2 class="mb-5 font-weight-bold" style="color:#ff5722;">Update {{lessons.name}}</h2>
+              <!-- class row for description-->
+              <div class="row d-flex justify-content-center mb-4" >
+                <!-- class column -->
+                <div class="col-md-8">
+                  <p class="grey-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quasi voluptate
+                                    hic
+                                    provident nulla repellat
+                                    facere esse molestiae ipsa labore porro minima quam quaerat rem, natus repudiandae debitis
+                                    est
+                                    sit pariatur.</p>
+                </div>
+              </div>
+</section>
+
+
+<form  method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{form|crispy}}
+  <div class="row">
+        <div class="col-md-4 mb-3 mr-3">
+                <input type="submit" value="Update" class="btn btn-dark btn-block">
+        </div>
+        <div class="col-md-4 mb-3 mr-3">
+                <a href="{% url 'curriculum:lesson_detail' standard=lessons.Standard.slug subject=lessons.subject.slug slug=lessons.slug %}" class="btn btn-dark btn-block">Cancel Update</a>
+        </div>
+</div>
+</form>
+
+{% endblock %}
