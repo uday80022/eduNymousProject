@@ -19,11 +19,21 @@
     </div>
     
     <div class="ncontainer2">
-        {{mode}} <br>
-        {{name}} <br>
-        {{comment_text}}<br>{{com_id}} <br>
-        {{c_lesson}} <br>
-        {{candidate_email}}
+        {%if checker %}
+            Mode of Comment : {{mode}} <br>
+            Name &emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&nbsp;: {{name}} <br>
+            Comment sent &emsp;&emsp;: {{comment_text}}<br>
+            Comment Id &emsp;&ensp;&ensp;&emsp;: {{com_id}} <br>
+            Lesson Name &emsp;&emsp;&ensp;: {{c_lesson}} <br>
+            Email &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;: {{candidate_email}}
+        {% else %}
+            {{mode}} <br>
+            {{name}} <br>
+            {{comment_text}}<br>{{com_id}} <br>
+            {{c_lesson}} <br>
+            {{candidate_email}}
+        {% endif %}
+
     </div>
     </div>
     

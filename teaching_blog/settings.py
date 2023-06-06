@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+from django.db.models import BigAutoField
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,7 +30,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+ 
 # Application definition
 
 INSTALLED_APPS = [
@@ -133,7 +134,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'eduNymous.india@gmail.com'
-EMAIL_HOST_PASSWORD = 'uktwmxlwwjmqogv'
+EMAIL_HOST_PASSWORD = 'uktwmxlwwjmqogvt'
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
@@ -144,3 +145,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
 
 LOGIN_URL = '/app_users/user_login'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

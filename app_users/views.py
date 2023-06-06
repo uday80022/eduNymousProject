@@ -76,12 +76,12 @@ def register(request):
             profile.save()
 
 
-            subject = 'eduNymous Account Created @aliet'
-            message = 'Account Details' + '\n' + 'Username : ' + str(user.username)+ '\n' + 'Password : ' + str(user_form.cleaned_data.get('password1'))
-            email_from = settings.EMAIL_HOST_USER
-            recipient_list = [str(user.email)]
-            send_mail( subject, message, email_from, recipient_list )
-
+            # subject = 'eduNymous Account Created @aliet'
+            # message = 'Account Details' + '\n' + 'Username : ' + str(user.username)+ '\n' + 'Password : ' + str(user_form.cleaned_data.get('password1'))
+            # email_from = settings.EMAIL_HOST_USER
+            # recipient_list = [str(user.email)]
+            # send_mail( subject, message, email_from, recipient_list )
+    
             registered = True
         else:
             print(user_form.errors, profile_form.errors)
@@ -97,8 +97,6 @@ def register(request):
 def report(request):
     
     if request.method == "POST":
-        
-
         comment_id=request.POST.get('commentid')
         print(comment_id)
         if comment_id=='':
@@ -107,30 +105,40 @@ def report(request):
             comment_details = Comment.objects.get(epoch=comment_id)
             user_details = User.objects.select_related('user_profile').get(username=comment_details.author)
             comment_context={
+                'checker':1,
                 'mode':'Comment Queried',
-                'c_lesson' :comment_details.lesson_name,
+                'c_lesson' : comment_details.lesson_name,
                 'name': comment_details.author,
                 'comment_text':comment_details.body,
                 'com_id':comment_details.epoch,
                 'candidate_email':user_details.email
-
             }
 
         except:
-            comment_details = Reply.objects.get(reply_epoch=comment_id)
-            user_details = User.objects.select_related('user_profile').get(username=comment_details.author)
-            comment_context={
-                'mode':'Replied Queried',
-                'c_lesson' :comment_details.comment_name,
-                'name': comment_details.author,
-                'comment_text':comment_details.reply_body,  
-                'com_id':comment_details.reply_epoch,
-                'candidate_email':user_details.email
+            try:
+                comment_details = Reply.objects.get(reply_epoch=comment_id)
+                user_details = User.objects.select_related('user_profile').get(username=comment_details.author)
+                comment_context={
+                    'checker':1,
+                    'mode':'Replied Queried ',
+                    'c_lesson' :'Name :' + comment_details.comment_name,
+                    'name': comment_details.author,
+                    'comment_text':comment_details.reply_body,  
+                    'com_id':comment_details.reply_epoch,
+                    'candidate_email':user_details.email 
+                    }
+            except:
+                comment_context={
+                    'checker':0,
+                    'mode':' ',
+                    'c_lesson' : ' ',
+                    'name': ' ',
+                    'comment_text':' Comment ID Details not Found',  
+                    'com_id': ' ',
+                    'candidate_email': ' ',
+                    }
 
-            }
-
-
-        user_details = User.objects.select_related('user_profile').get(username=comment_details.author)
+        # user_details = User.objects.select_related('user_profile').get(username=comment_details.author)
         
         return render(request,'app_users/reportedquery.html',comment_context)
     else:
@@ -138,7 +146,6 @@ def report(request):
 
 class HomeView(TemplateView):                                                   #needed
     template_name = 'app_users/login.html'
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

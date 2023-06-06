@@ -15,6 +15,9 @@ import time
 from django.utils import timezone
 from django.conf import settings
 from django.core.mail import send_mail
+import re
+from django.http import JsonResponse
+from django.views.generic import DetailView, FormView
 
 
 
@@ -162,19 +165,17 @@ class LessonDetailView(DetailView, FormView):
         fm.save()
 
         #mail code final
-        subject = 'Comment'
-        comment_content = Comment.objects.get(epoch=fm.epoch)
-        message = str(self.object.subject)+"    "+str(self.object)+'    '+ str(comment_content.body)+'  ' +str(self.epoch_time) 
-        email_from = settings.EMAIL_HOST_USER
-        a =Lesson.objects.get(id=self.object.id) 
+        # subject = 'Comment'
+        # comment_content = Comment.objects.get(epoch=fm.epoch)
+        # message = str(self.object.subject)+"    "+str(self.object)+'    '+ str(comment_content.body)+'  ' +str(self.epoch_time) 
+        # email_from = settings.EMAIL_HOST_USER
+        # a =Lesson.objects.get(id=self.object.id) 
     
-        fac_mail= User.objects.select_related('user_profile').get(username=a.created_by)
+        # fac_mail= User.objects.select_related('user_profile').get(username=a.created_by)
        
         
-        recipient_list = [str(fac_mail.email)]
-        send_mail( subject, message, email_from, recipient_list )
-        
- 
+        # recipient_list = [str(fac_mail.email)]
+        # send_mail( subject, message, email_from, recipient_list )
         
         return HttpResponseRedirect(self.get_success_url())
 
@@ -189,23 +190,24 @@ class LessonDetailView(DetailView, FormView):
         
         fm.save()
 
-        subject = 'Reply'
-        comment_content = Reply.objects.get(reply_epoch = self.epoch_time)
-        message = str(self.object.subject)+"\n"+str(self.object)+'\n'+ str(comment_content.reply_body)+'\n' +str(self.epoch_time) 
-        email_from = settings.EMAIL_HOST_USER
-        a =Lesson.objects.get(id=self.object.id) 
+        # subject = 'Reply'
+        # comment_content = Reply.objects.get(reply_epoch = self.epoch_time)
+        # message = str(self.object.subject)+"\n"+str(self.object)+'\n'+ str(comment_content.reply_body)+'\n' +str(self.epoch_time) 
+        # email_from = settings.EMAIL_HOST_USER
+        # a =Lesson.objects.get(id=self.object.id) 
     
-        fac_mail= User.objects.select_related('user_profile').get(username=a.created_by)
-        cand_email=User.objects.select_related('user_profile').get(username=comment_content.author)
-        # print(cand_email.email)
+        # fac_mail= User.objects.select_related('user_profile').get(username=a.created_by)
+        # cand_email=User.objects.select_related('user_profile').get(username=comment_content.author)
+        # # print(cand_email.email)
         
-        recipient_list = [str(fac_mail.email)]
-        send_mail( subject, message, email_from, recipient_list )
-        main_comment = Comment.objects.get(id = fm.comment_name_id).body
-        main_comm_message ="Subject : "+ str(self.object.subject)+"\n"+"Lesson : "+str(self.object)+"\n"+"To comment :"+main_comment+"\n"+ "Relpy is : "+str(comment_content.reply_body)
-        send_mail('Replied to your Comment',main_comm_message,email_from,[str(cand_email.email)])
+        # recipient_list = [str(fac_mail.email)]
+        # send_mail( subject, message, email_from, recipient_list )
+        # main_comment = Comment.objects.get(id = fm.comment_name_id).body
+        # main_comm_message ="Subject : "+ str(self.object.subject)+"\n"+"Lesson : "+str(self.object)+"\n"+"To comment :"+main_comment+"\n"+ "Relpy is : "+str(comment_content.reply_body)
+        # send_mail('Replied to your Comment',main_comm_message,email_from,[str(cand_email.email)])
 
         return HttpResponseRedirect(self.get_success_url())
+
 
 class SubjectCreateListView(CreateView):
     # fields = ('lesson_id','name','position','image','video','ppt','Notes')
@@ -242,7 +244,6 @@ class LessonCreateView(CreateView):
         return reverse_lazy('curriculum:lesson_list',kwargs={'standard':standard.slug,
                                                              'slug':self.object.slug})
 
-
     def form_valid(self, form, *args, **kwargs):
         self.object = self.get_object()
         fm = form.save(commit=False)
@@ -251,16 +252,26 @@ class LessonCreateView(CreateView):
         fm.subject = self.object
 
         video = form.cleaned_data['video']
+        # if "youtu.be" in video:
+        #     s = video.split("/")
+        #     fm.video = s[3]
+        # else:
+        #     s = video.split("v=")[1]
+        #     if "&" in s:
+        #         s = s.split("&")[0]
+        #         fm.video = s
+        #     fm.video = s
+
+        video_id = None 
         if "youtu.be" in video:
             s = video.split("/")
-            fm.video = s[3]
+            video_id = s[3]
         else:
-            s = video.split("v=")[1]
-            if "&" in s:
-                s = s.split("&")[0]
-                fm.video = s
-            fm.video = s
-        # https://www.youtube.com/embed/iZ5my3krEVM
+            s = re.findall(r"v=([^&]+)", video)
+            if s:
+                video_id = s[0]
+            fm.video = video_id
+        # # https://www.youtube.com/embed/iZ5my3krEVM
 
         fm.save()
         return HttpResponseRedirect(self.get_success_url())
@@ -279,15 +290,16 @@ class LessonUpdateView(UpdateView):
 
         #nihal code
         video = form.cleaned_data['video']
+        video_id = None 
         if "youtu.be" in video:
             s = video.split("/")
-            fm.video = s[3]
+            video_id = s[3]
         else:
-            s = video.split("v=")[1]
-            if "&" in s:
-                s = s.split("&")[0]
-                fm.video = s
-            fm.video = s
+            s = re.findall(r"v=([^&]+)", video)
+            if s:
+                video_id = s[0]
+            fm.video = video_id 
+
         # https://www.youtube.com/embed/iZ5my3krEVM
         fm.save()
         return HttpResponseRedirect(self.get_success_url())
